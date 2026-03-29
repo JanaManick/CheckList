@@ -1,0 +1,52 @@
+<div class="app-container">
+  <header class="app-header">
+    <h1>{{ title() }}</h1>
+    <p class="progress">{{ getCompletedCount() }}/{{ getTotalCount() }} completed</p>
+  </header>
+
+  <main class="app-main">
+    <!-- Add Task Section -->
+    <section class="add-task-section">
+      <div class="input-group">
+        <input
+          type="text"
+          [(ngModel)]="newTaskName"
+          placeholder="Enter a new task..."
+          class="task-input"
+          (keyup.enter)="addTask()"
+        />
+        <button (click)="addTask()" class="btn btn-primary">
+          Add Task
+        </button>
+      </div>
+    </section>
+
+    <!-- Tasks List Section -->
+    <section class="tasks-section">
+      <div *ngIf="taskService.tasks().length === 0" class="empty-state">
+        <p>No tasks yet. Create one to get started!</p>
+      </div>
+
+      <ul class="tasks-list" *ngIf="taskService.tasks().length > 0">
+        <li *ngFor="let task of taskService.tasks()" class="task-item" [class.completed]="task.completed">
+          <label class="task-checkbox">
+            <input
+              type="checkbox"
+              [checked]="task.completed"
+              (change)="toggleTask(task.id)"
+              class="checkbox-input"
+            />
+            <span class="task-name">{{ task.name }}</span>
+          </label>
+          <button
+            (click)="deleteTask(task.id)"
+            class="btn btn-delete"
+            title="Delete task"
+          >
+            Delete
+          </button>
+        </li>
+      </ul>
+    </section>
+  </main>
+</div>
